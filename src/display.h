@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+namespace Pacman {
+
 class Display {
     public:
         Display();
@@ -12,6 +14,9 @@ class Display {
 
     private:
         SDL_Window* window;
+        SDL_Surface* window_surface;
 };
+
+}
 
 #endif // DISPLAY_H
