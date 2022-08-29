@@ -1,7 +1,43 @@
 #include "game.h"
 
-Pacman::Game::Game() {}
+Pacman::Game::Game() {
+    quit_flag = false;
+}
 
 void Pacman::Game::event_loop() {
-    SDL_Delay(3000);
+    while (!quit_flag) {
+        optional<KeyPress> last_key_event = get_key();
+
+        quit_flag = (last_key_event == KeyPress::Quit);
+
+        SDL_Delay(16);
+    }
+}
+
+optional<Pacman::KeyPress> Pacman::Game::get_key() {
+    SDL_Event event;
+    while(SDL_PollEvent(&event) != 0) {
+        if (event.type == SDL_QUIT) {
+            return KeyPress::Quit;
+        } else if (event.type == SDL_KEYDOWN) {
+            auto key = event.key.keysym.scancode;
+            if (key == SDL_SCANCODE_ESCAPE || key == SDL_SCANCODE_Q) {
+                return KeyPress::Quit;
+            }
+            else if (key == SDL_SCANCODE_UP) {
+                return KeyPress::Up;
+            }
+            if (key == SDL_SCANCODE_DOWN) {
+                return KeyPress::Down;
+            }
+            if (key == SDL_SCANCODE_LEFT) {
+                return KeyPress::Left;
+            }
+            if (key == SDL_SCANCODE_RIGHT) {
+                return KeyPress::Right;
+            }
+        }
+    }
+
+    return nullopt;
 }
