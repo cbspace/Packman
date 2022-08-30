@@ -31,3 +31,20 @@ Pacman::Display::~Display() {
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+
+void Pacman::Display::draw_map(std::string const &path) {
+    std::ifstream ifs;
+    std::string str;
+
+    ifs.open("./res/maps/test.map", std::ios::in);
+
+    if (ifs) {
+        std::getline(ifs, str);
+        std::cout << str << std::endl;
+    }
+    else { 
+        std::cout << "Eror: Cannot open map file" << std::endl;
+    }
+    
+    ifs.close();
+}

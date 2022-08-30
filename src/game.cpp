@@ -4,7 +4,17 @@ Pacman::Game::Game() {
     quit_flag = false;
 }
 
-void Pacman::Game::event_loop() {
+int Pacman::Game::game_loop() {
+    if(main_display.init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+        return 1;
+    }
+
+    main_display.draw_map(MAP_PATH);
+
+    return event_loop();
+}
+
+int Pacman::Game::event_loop() {
     while (!quit_flag) {
         optional<KeyPress> last_key_event = get_key();
 
@@ -12,6 +22,7 @@ void Pacman::Game::event_loop() {
 
         SDL_Delay(16);
     }
+    return 0;
 }
 
 optional<Pacman::KeyPress> Pacman::Game::get_key() {

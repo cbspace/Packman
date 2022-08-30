@@ -2,6 +2,10 @@
 #define DISPLAY_H
 
 #include <SDL2/SDL.h>
+#include <string>
+#include <string_view>
+#include <iostream>
+#include <fstream>
 
 namespace Pacman {
 
@@ -10,6 +14,9 @@ class Display {
         Display();
         SDL_Window* get_window();
         int init(int width, int height);
+
+        void draw_map(std::string const &path);
+
         virtual ~Display();
 
     private:
