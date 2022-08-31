@@ -1,50 +1,58 @@
 #include "display.h"
 
-Pacman::Display::Display() {
+Display::Display() {
     window = NULL;
     window_surface = NULL;
 }
 
-SDL_Window* Pacman::Display::get_window() {
+SDL_Window* Display::get_window() {
     return window;
 }
 
-int Pacman::Display::init(int width, int height) {
+optional<Error> Display::init(int width, int height) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        fprintf(stderr, "SDL failed to initialise: %s\n", SDL_GetError());
-        return 1;
+        string error_message = "SDL failed to initialise: ";
+        error_message += SDL_GetError();
+        return Error(error_message);
     }
 
     window = SDL_CreateWindow("Pacman", 750, 300, width, height, 0);
 
     if (window == NULL) {
-        fprintf(stderr, "SDL window failed to initialise: %s\n", SDL_GetError());
-        return 1;
+        string error_message = "SDL failed to initialise: ";
+        error_message += SDL_GetError();
+        return Error(error_message);
     }
 
     window_surface = SDL_GetWindowSurface(window);
 
-    return 0;
+    return nullopt;
 }
 
-Pacman::Display::~Display() {
+Display::~Display() {
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
-void Pacman::Display::draw_map(std::string const &path) {
-    std::ifstream ifs;
-    std::string str;
+optional<Error> Display::load_map_from_file(string const &path) {
+    ifstream ifs;
+    string str;
 
-    ifs.open("./res/maps/test.map", std::ios::in);
+    ifs.open("./res/maps/test.map", ios::in);
 
-    if (ifs) {
-        std::getline(ifs, str);
-        std::cout << str << std::endl;
-    }
-    else { 
-        std::cout << "Eror: Cannot open map file" << std::endl;
+    if (!ifs) { return Error("Could not open map file"); }
+
+    getline(ifs,str);
+    int map_width = stoi(str);
+    getline(ifs,str);
+    int map_height = stoi(str);
+
+    while(!ifs.eof()) {
+        getline(ifs, str);
+        cout << str << endl;
     }
     
     ifs.close();
+
+    return nullopt;
 }

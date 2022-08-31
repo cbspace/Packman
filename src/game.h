@@ -4,14 +4,15 @@
 #include "display.h"
 #include <SDL2/SDL.h>
 #include <optional>
+#include <iostream>
 
 #define WINDOW_WIDTH  400
 #define WINDOW_HEIGHT 800
 #define MAP_PATH "../res/maps/test.map"
 
-using namespace std;
+using std::optional;
 
-namespace Pacman {
+namespace Packman {
 
 enum class KeyPress {
     Up,
@@ -28,11 +29,13 @@ class Game {
         int game_loop();
         int event_loop();
     private:
-        Pacman::Display main_display;
+        Packman::Display main_display;
         bool quit_flag;
         optional<KeyPress> get_key();
 };
 
 }
+
+using namespace Packman;
 
 #endif // GAME_H

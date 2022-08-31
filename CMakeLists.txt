@@ -9,6 +9,8 @@ include_directories(pacman ${SDL2_INCLUDE_DIRS})
 file(GLOB SOURCES
     src/*.h
     src/*.cpp
+    src/lib/*.h
+    src/lib/*.cpp
 )
 
 add_executable(pacman ${SOURCES})

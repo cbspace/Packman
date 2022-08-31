@@ -1,20 +1,21 @@
 #include "game.h"
 
-Pacman::Game::Game() {
+Game::Game() {
     quit_flag = false;
 }
 
-int Pacman::Game::game_loop() {
-    if(main_display.init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+int Game::game_loop() {
+    if(auto e = main_display.init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+        cout << e.value().get_error_text() << endl;
         return 1;
     }
 
-    main_display.draw_map(MAP_PATH);
+    main_display.load_map_from_file(MAP_PATH);
 
     return event_loop();
 }
 
-int Pacman::Game::event_loop() {
+int Game::event_loop() {
     while (!quit_flag) {
         optional<KeyPress> last_key_event = get_key();
 
@@ -25,7 +26,7 @@ int Pacman::Game::event_loop() {
     return 0;
 }
 
-optional<Pacman::KeyPress> Pacman::Game::get_key() {
+optional<KeyPress> Game::get_key() {
     SDL_Event event;
     while(SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
