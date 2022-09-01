@@ -49,7 +49,10 @@ optional<Error> Display::load_map_from_file(string const &path) {
 
     while(!ifs.eof()) {
         getline(ifs, str);
-        cout << str << endl;
+        for (char const c : str) {
+            cout << c;
+        }
+        cout << endl;
     }
     
     ifs.close();

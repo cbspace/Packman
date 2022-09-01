@@ -10,14 +10,17 @@ int Game::game_loop() {
         return 1;
     }
 
-    main_display.load_map_from_file(MAP_PATH);
+    if (auto e = main_display.load_map_from_file(MAP_PATH)) {
+        cout << e.value().get_error_text() << endl;
+        return 1;
+    }
 
     return event_loop();
 }
 
 int Game::event_loop() {
     while (!quit_flag) {
-        optional<KeyPress> last_key_event = get_key();
+        auto last_key_event = get_key();
 
         quit_flag = (last_key_event == KeyPress::Quit);
 

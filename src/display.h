@@ -5,13 +5,20 @@
 #include <SDL2/SDL.h>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
 namespace Packman {
+
+enum class MapPoint {
+    Wall,
+    Space,
+    LeftOpening,
+    RightOpening
+};
 
 class Display {
     public:
@@ -27,6 +34,7 @@ class Display {
         SDL_Surface* window_surface;
         int map_width = 0;
         int map_height = 0;
+        vector<vector<MapPoint>> map_vec;
 };
 
 }
