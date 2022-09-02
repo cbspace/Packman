@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -17,7 +18,8 @@ enum class MapPoint {
     Wall,
     Space,
     LeftOpening,
-    RightOpening
+    RightOpening,
+    Invalid
 };
 
 class Display {
