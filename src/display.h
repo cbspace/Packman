@@ -10,6 +10,9 @@
 #include <vector>
 #include <algorithm>
 
+#define WINDOW_WIDTH  400
+#define WINDOW_HEIGHT 800
+
 using namespace std;
 
 namespace Packman {
@@ -23,20 +26,28 @@ enum class MapPoint {
 };
 
 class Display {
+
     public:
         Display();
-        SDL_Window* get_window();
-        optional<Error> init(int width, int height);
-        optional<Error> load_map_from_file(string const &path);
-
         virtual ~Display();
+
+        optional<Error> init();
+        optional<Error> load_map_from_file(string const &path);
+        
+        void draw_map();
+        void render_cycle();
 
     private:
         SDL_Window* window;
         SDL_Surface* window_surface;
+        SDL_Renderer* main_renderer;
+
         int map_width = 0;
         int map_height = 0;
         vector<vector<MapPoint>> map_vec;
+
+        SDL_Window* get_window();
+
 };
 
 }

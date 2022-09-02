@@ -1,9 +1,14 @@
 #include "Error.h"
 
 Error::Error(const string &error_string) {
-    error_text = "Error: " + error_string;
+    this->error_text = "Error: " + error_string;
 }
 
-string Error::get_error_text() {
-    return error_text;
+Error::Error(const string &error_string, const string &error_additional) {
+    this->error_text = error_string;
+    this->error_additional_text = error_additional;
+}
+
+string Error::get_error_string() {
+    return error_text + " (" + error_additional_text + ")";
 }

@@ -5,15 +5,18 @@ Game::Game() {
 }
 
 int Game::game_loop() {
-    if(auto e = main_display.init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
-        cout << e.value().get_error_text() << endl;
+    if(auto e = main_display.init()) {
+        cout << e.value().get_error_string() << endl;
         return 1;
     }
 
     if (auto e = main_display.load_map_from_file(MAP_PATH)) {
-        cout << e.value().get_error_text() << endl;
+        cout << e.value().get_error_string() << endl;
         return 1;
     }
+
+    //temp
+    main_display.draw_map();
 
     return event_loop();
 }
@@ -21,8 +24,9 @@ int Game::game_loop() {
 int Game::event_loop() {
     while (!quit_flag) {
         auto last_key_event = get_key();
-
         quit_flag = (last_key_event == KeyPress::Quit);
+
+        main_display.render_cycle();
 
         SDL_Delay(16);
     }

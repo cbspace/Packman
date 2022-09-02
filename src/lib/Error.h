@@ -10,9 +10,11 @@ namespace Packman {
 class Error {
     public:
         Error(const string &error_string = "Undefined Error");
-        string get_error_text();
+        Error(const string &error_string, const string &error_additional);
+        string get_error_string();
     private:
         string error_text;
+        string error_additional_text;
 };
 
 }

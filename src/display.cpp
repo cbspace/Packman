@@ -3,34 +3,33 @@
 Display::Display() {
     window = NULL;
     window_surface = NULL;
+    main_renderer = NULL;
 }
 
 SDL_Window* Display::get_window() {
     return window;
 }
 
-optional<Error> Display::init(int width, int height) {
+optional<Error> Display::init() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        string error_message = "SDL failed to initialise: ";
-        error_message += SDL_GetError();
-        return Error(error_message);
+        return Error("SDL failed to initialise",SDL_GetError());
     }
 
-    window = SDL_CreateWindow("Pacman", 750, 300, width, height, 0);
-
-    if (window == NULL) {
-        string error_message = "SDL failed to initialise: ";
-        error_message += SDL_GetError();
-        return Error(error_message);
-    }
+    window = SDL_CreateWindow("Packman", 750, 100, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+    if (window == NULL) { return Error("SDL failed to initialise",SDL_GetError()); }
 
     window_surface = SDL_GetWindowSurface(window);
+    if (window_surface == NULL) { return Error("Cannot create SDL surface",SDL_GetError()); }
+
+    main_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (main_renderer == NULL) { return Error("Cannot create SDL renderer",SDL_GetError()); }
 
     return nullopt;
 }
 
 Display::~Display() {
     SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(main_renderer);
     SDL_Quit();
 }
 
@@ -78,4 +77,48 @@ optional<Error> Display::load_map_from_file(string const &path) {
     ifs.close();
 
     return nullopt;
+}
+
+void Display::draw_map() {
+    int y = 0;
+    SDL_Rect rect = { 0, 0 ,20, 20 };
+    for(const auto &row : map_vec) {
+        int x = 0;
+        for(const auto point : row) {
+            switch (point) {
+                case MapPoint::Wall:
+                    rect.x = x*20;
+                    rect.y = y*20;
+                    SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                    SDL_RenderFillRect(main_renderer, &rect);
+                    break;
+                case MapPoint::Space:
+                    
+                    break;
+                case MapPoint::LeftOpening:
+                    
+                    break;
+                case MapPoint::RightOpening:
+                    
+                    break;
+                default:
+                    cout << "Invalid character found in map file" << endl;
+            }
+            x++;
+        }
+        y++;
+    }
+}
+
+void Display::render_cycle() {
+    // Clear screen
+    SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0x00, 0x00);
+    SDL_RenderClear(main_renderer);
+    SDL_RenderPresent(main_renderer);
+
+    // Draw map
+    draw_map();
+
+    // Update Screen
+    SDL_RenderPresent(main_renderer);
 }

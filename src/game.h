@@ -6,8 +6,6 @@
 #include <optional>
 #include <iostream>
 
-#define WINDOW_WIDTH  400
-#define WINDOW_HEIGHT 800
 #define MAP_PATH "../res/maps/test.map"
 
 using std::optional;
@@ -24,13 +22,16 @@ enum class KeyPress {
 };
 
 class Game {
+
     public:
         Game();
         int game_loop();
-        int event_loop();
+        
     private:
         Packman::Display main_display;
         bool quit_flag;
+
+        int event_loop();
         optional<KeyPress> get_key();
 };
 
