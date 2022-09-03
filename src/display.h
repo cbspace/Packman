@@ -10,8 +10,8 @@
 #include <vector>
 #include <algorithm>
 
-#define WINDOW_WIDTH  400
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH  560
+#define WINDOW_HEIGHT 620
 
 using namespace std;
 
@@ -22,7 +22,14 @@ enum class MapPoint {
     Space,
     LeftOpening,
     RightOpening,
+    Dot,
     Invalid
+};
+
+enum class MapObject {
+    Dot,
+    PowerPellet,
+    Fruit
 };
 
 class Display {

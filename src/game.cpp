@@ -28,7 +28,7 @@ int Game::event_loop() {
 
         main_display.render_cycle();
 
-        SDL_Delay(16);
+        SDL_Delay(200);
     }
     return 0;
 }

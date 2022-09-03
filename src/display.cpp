@@ -15,7 +15,7 @@ optional<Error> Display::init() {
         return Error("SDL failed to initialise",SDL_GetError());
     }
 
-    window = SDL_CreateWindow("Packman", 750, 100, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+    window = SDL_CreateWindow("Packman", 650, 100, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     if (window == NULL) { return Error("SDL failed to initialise",SDL_GetError()); }
 
     window_surface = SDL_GetWindowSurface(window);
@@ -37,7 +37,7 @@ optional<Error> Display::load_map_from_file(string const &path) {
     ifstream ifs;
     string str;
 
-    ifs.open("./res/maps/test.map", ios::in);
+    ifs.open(path, ios::in);
     if (!ifs) { return Error("Could not open map file"); }
 
     getline(ifs,str);
@@ -56,18 +56,21 @@ optional<Error> Display::load_map_from_file(string const &path) {
                 case '*':
                     current_row[i++] = MapPoint::Wall;
                     break;
-                case ' ':
+                case 'E':
                     current_row[i++] = MapPoint::Space;
                     break;
-                case '1':
+                case ' ':
+                    current_row[i++] = MapPoint::Dot; //temp
+                    break;
+                case 'L':
                     current_row[i++] = MapPoint::LeftOpening;
                     break;
-                case '2':
+                case 'R':
                     current_row[i++] = MapPoint::RightOpening;
                     break;
                 default:
                     current_row[i++] = MapPoint::Invalid;
-                    cout << "Invalid character: '" << c << "' found in map file" << endl;
+                    //cout << "Invalid character: '" << c << "' found in map file" << endl;
             } 
         });
 
@@ -81,19 +84,23 @@ optional<Error> Display::load_map_from_file(string const &path) {
 
 void Display::draw_map() {
     int y = 0;
-    SDL_Rect rect = { 0, 0 ,20, 20 };
+    SDL_Rect wall_rect = { 0, 0 ,20, 20 };
+    SDL_Rect dot_rect = { 0, 0, 4, 4 };
     for(const auto &row : map_vec) {
         int x = 0;
         for(const auto point : row) {
             switch (point) {
                 case MapPoint::Wall:
-                    rect.x = x*20;
-                    rect.y = y*20;
+                    wall_rect.x = x*20;
+                    wall_rect.y = y*20;
                     SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
-                    SDL_RenderFillRect(main_renderer, &rect);
+                    SDL_RenderFillRect(main_renderer, &wall_rect);
                     break;
-                case MapPoint::Space:
-                    
+                case MapPoint::Dot:
+                    dot_rect.x = x*20 + 8;
+                    dot_rect.y = y*20 + 8;
+                    SDL_SetRenderDrawColor(main_renderer, 0xff, 0xff, 0xff, 0xff);
+                    SDL_RenderFillRect(main_renderer, &dot_rect);
                     break;
                 case MapPoint::LeftOpening:
                     
@@ -101,8 +108,8 @@ void Display::draw_map() {
                 case MapPoint::RightOpening:
                     
                     break;
-                default:
-                    cout << "Invalid character found in map file" << endl;
+                //default:
+                    //cout << "Invalid character found in map file" << endl;
             }
             x++;
         }

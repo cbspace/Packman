@@ -6,7 +6,7 @@
 #include <optional>
 #include <iostream>
 
-#define MAP_PATH "../res/maps/test.map"
+#define MAP_PATH "./res/maps/map1.map"
 
 using std::optional;
 
