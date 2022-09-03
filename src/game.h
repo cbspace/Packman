@@ -31,7 +31,7 @@ class Game {
         Packman::Display main_display;
         bool quit_flag;
 
-        int event_loop();
+        void event_loop();
         optional<KeyPress> get_key();
 };
 

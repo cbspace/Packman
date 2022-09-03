@@ -39,12 +39,6 @@ enum class MapPoint {
     NotValid
 };
 
-// enum class MapObject {
-//     Dot,
-//     PowerPellet,
-//     Fruit
-// };
-
 class Display {
 
     public:
@@ -54,8 +48,9 @@ class Display {
         optional<Error> init();
         optional<Error> load_map_from_file(string const &path);
         
-        void draw_map();
         void render_cycle();
+        void draw_map();
+        void update_character();
 
     private:
         SDL_Window* window;

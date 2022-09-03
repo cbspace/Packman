@@ -15,22 +15,20 @@ int Game::game_loop() {
         return 1;
     }
 
-    //temp
-    main_display.draw_map();
+    event_loop();
 
-    return event_loop();
+    return 0;
 }
 
-int Game::event_loop() {
+void Game::event_loop() {
     while (!quit_flag) {
         auto last_key_event = get_key();
         quit_flag = (last_key_event == KeyPress::Quit);
 
         main_display.render_cycle();
 
-        SDL_Delay(200);
+        SDL_Delay(16);
     }
-    return 0;
 }
 
 optional<KeyPress> Game::get_key() {

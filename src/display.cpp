@@ -121,6 +121,23 @@ optional<Error> Display::load_map_from_file(string const &path) {
     return nullopt;
 }
 
+void Display::render_cycle() {
+    // Clear screen
+    SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0x00, 0x00);
+    SDL_RenderClear(main_renderer);
+
+    // Draw screen
+    draw_map();
+    update_character();
+
+    // Update Screen
+    SDL_RenderPresent(main_renderer);
+}
+
+void Display::update_character() {
+
+}
+
 void Display::draw_map() {
     int y = 0;
     for(const auto &row : map_vec) {
@@ -203,17 +220,4 @@ void Display::draw_map() {
         }
         y++;
     }
-}
-
-void Display::render_cycle() {
-    // Clear screen
-    SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0x00, 0x00);
-    SDL_RenderClear(main_renderer);
-    SDL_RenderPresent(main_renderer);
-
-    // Draw map
-    draw_map();
-
-    // Update Screen
-    SDL_RenderPresent(main_renderer);
 }
