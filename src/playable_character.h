@@ -19,6 +19,4 @@ class PlayableCharacter : Character {
 
 }
 
-using namespace Packman;
-
 #endif // PLAYABLE_CHARACTER_H

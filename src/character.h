@@ -9,6 +9,8 @@ class Character {
         Character();
         virtual ~Character();
 
+        void reset_character();
+
         int x_pos;
         int y_pos;
     private:
@@ -16,7 +18,5 @@ class Character {
 };
 
 }
-
-using namespace Packman;
 
 #endif // CHARACTER_H
