@@ -18,19 +18,32 @@ using namespace std;
 namespace Packman {
 
 enum class MapPoint {
-    Wall,
+    WallFull,
+    WallAbove,
+    WallBelow,
+    WallLeft,
+    WallRight,
+    CornerTopLeftInside,
+    CornerTopRightInside,
+    CornerBottomLeftInside,
+    CornerBottomRightInside,
+    CornerTopLeftOutside,
+    CornerTopRightOutside,
+    CornerBottomLeftOutside,
+    CornerBottomRightOutside,
     Space,
     LeftOpening,
     RightOpening,
     Dot,
-    Invalid
+    PowerPellet,
+    NotValid
 };
 
-enum class MapObject {
-    Dot,
-    PowerPellet,
-    Fruit
-};
+// enum class MapObject {
+//     Dot,
+//     PowerPellet,
+//     Fruit
+// };
 
 class Display {
 

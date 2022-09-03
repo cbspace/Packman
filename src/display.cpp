@@ -54,7 +54,43 @@ optional<Error> Display::load_map_from_file(string const &path) {
         for_each(str.begin(), str.end(), [&current_row, &i] (char const &c) {
             switch (c) {
                 case '*':
-                    current_row[i++] = MapPoint::Wall;
+                    current_row[i++] = MapPoint::WallFull;
+                    break;
+                case 'A':
+                    current_row[i++] = MapPoint::WallAbove;
+                    break;
+                case 'B':
+                    current_row[i++] = MapPoint::WallBelow;
+                    break;
+                case 'L':
+                    current_row[i++] = MapPoint::WallLeft;
+                    break;
+                case 'R':
+                    current_row[i++] = MapPoint::WallRight;
+                    break;
+                case '1':
+                    current_row[i++] = MapPoint::CornerTopLeftInside;
+                    break;
+                case '2':
+                    current_row[i++] = MapPoint::CornerTopRightInside;
+                    break;
+                case '3':
+                    current_row[i++] = MapPoint::CornerBottomRightInside;
+                    break;
+                case '4':
+                    current_row[i++] = MapPoint::CornerBottomLeftInside;
+                    break;
+                case '5':
+                    current_row[i++] = MapPoint::CornerTopLeftOutside;
+                    break;
+                case '6':
+                    current_row[i++] = MapPoint::CornerTopRightOutside;
+                    break;
+                case '7':
+                    current_row[i++] = MapPoint::CornerBottomRightOutside;
+                    break;
+                case '8':
+                    current_row[i++] = MapPoint::CornerBottomLeftOutside;
                     break;
                 case 'E':
                     current_row[i++] = MapPoint::Space;
@@ -62,14 +98,17 @@ optional<Error> Display::load_map_from_file(string const &path) {
                 case ' ':
                     current_row[i++] = MapPoint::Dot; //temp
                     break;
-                case 'L':
+                case '[':
                     current_row[i++] = MapPoint::LeftOpening;
                     break;
-                case 'R':
+                case ']':
                     current_row[i++] = MapPoint::RightOpening;
                     break;
+                case 'P':
+                    current_row[i++] = MapPoint::PowerPellet; //temp
+                    break;
                 default:
-                    current_row[i++] = MapPoint::Invalid;
+                    current_row[i++] = MapPoint::NotValid;
                     //cout << "Invalid character: '" << c << "' found in map file" << endl;
             } 
         });
@@ -84,32 +123,81 @@ optional<Error> Display::load_map_from_file(string const &path) {
 
 void Display::draw_map() {
     int y = 0;
-    SDL_Rect wall_rect = { 0, 0 ,20, 20 };
-    SDL_Rect dot_rect = { 0, 0, 4, 4 };
     for(const auto &row : map_vec) {
         int x = 0;
         for(const auto point : row) {
-            switch (point) {
-                case MapPoint::Wall:
-                    wall_rect.x = x*20;
-                    wall_rect.y = y*20;
-                    SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
-                    SDL_RenderFillRect(main_renderer, &wall_rect);
-                    break;
-                case MapPoint::Dot:
-                    dot_rect.x = x*20 + 8;
-                    dot_rect.y = y*20 + 8;
-                    SDL_SetRenderDrawColor(main_renderer, 0xff, 0xff, 0xff, 0xff);
-                    SDL_RenderFillRect(main_renderer, &dot_rect);
-                    break;
-                case MapPoint::LeftOpening:
-                    
-                    break;
-                case MapPoint::RightOpening:
-                    
-                    break;
-                //default:
-                    //cout << "Invalid character found in map file" << endl;
+            if (point == MapPoint::WallFull) {
+                SDL_Rect wall_rect{ x*20, y*20 ,20, 20 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::WallAbove) {
+                SDL_Rect wall_rect{ x*20, y*20 ,20, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::WallBelow) {
+                SDL_Rect wall_rect{ x*20, y*20 + 10, 20, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::WallLeft) {
+                SDL_Rect wall_rect{ x*20, y*20 ,10, 20 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::WallRight) {
+                SDL_Rect wall_rect{ x*20 + 10, y*20 ,10, 20 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::CornerTopLeftInside) {
+                SDL_Rect wall_rect{ x*20 + 10, y*20 + 10, 10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::CornerTopRightInside) {
+                SDL_Rect wall_rect{ x*20, y*20 + 10 ,10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::CornerBottomRightInside) {
+                SDL_Rect wall_rect{ x*20,y*20 , 10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::CornerBottomLeftInside) {
+                SDL_Rect wall_rect{ x*20 + 10, y*20, 10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect);
+            } else if (point == MapPoint::CornerTopLeftOutside) {
+                SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
+                SDL_Rect wall_rect_small{ x*20 + 10, y*20 + 10, 10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect_big);
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_renderer, &wall_rect_small);
+            } else if (point == MapPoint::CornerTopRightOutside) {
+                SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
+                SDL_Rect wall_rect_small{ x*20, y*20 +10,10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect_big);
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_renderer, &wall_rect_small);
+            } else if (point == MapPoint::CornerBottomRightOutside) {
+                SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
+                SDL_Rect wall_rect_small{ x*20, y*20, 10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect_big);
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_renderer, &wall_rect_small);
+            } else if (point == MapPoint::CornerBottomLeftOutside) {
+                SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
+                SDL_Rect wall_rect_small{ x*20 + 10, y*20, 10, 10 };
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &wall_rect_big);
+                SDL_SetRenderDrawColor(main_renderer, 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_renderer, &wall_rect_small);
+            } else if (point == MapPoint::Dot) {
+                SDL_Rect dot_rect{ x*20 + 8, y*20 + 8, 4, 4 };
+                SDL_SetRenderDrawColor(main_renderer, 0xff, 0xff, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &dot_rect);
+            } else if (point == MapPoint::PowerPellet) {
+                SDL_Rect dot_rect{ x*20 + 6, y*20 + 6, 12, 12 };
+                SDL_SetRenderDrawColor(main_renderer, 0xff, 0xff, 0xff, 0xff);
+                SDL_RenderFillRect(main_renderer, &dot_rect);
             }
             x++;
         }
