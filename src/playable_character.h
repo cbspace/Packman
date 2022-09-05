@@ -9,7 +9,7 @@ class PlayableCharacter : Character {
 
     public:
         PlayableCharacter();
-        virtual ~PlayableCharacter();
+        //virtual ~PlayableCharacter();
 
         int lives;
         int score;
@@ -18,5 +18,7 @@ class PlayableCharacter : Character {
 };
 
 }
+
+using namespace Packman;
 
 #endif // PLAYABLE_CHARACTER_H

@@ -7,7 +7,7 @@ class Character {
 
     public:
         Character();
-        virtual ~Character();
+        //virtual ~Character();
 
         void reset_character();
 

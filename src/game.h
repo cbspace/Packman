@@ -66,7 +66,7 @@ class Game {
 
         Display main_display;
         vector<vector<MapPoint>> map_vec;
-        PlayableCharacter packman_character;
+        //PlayableCharacter packman_character;
 
         bool quit_flag;
         int map_width = 0;
