@@ -9,7 +9,7 @@ class PlayableCharacter : Character {
 
     public:
         PlayableCharacter();
-        //virtual ~PlayableCharacter();
+        void reset_character();
 
         int lives;
         int score;

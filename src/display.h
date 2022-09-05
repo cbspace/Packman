@@ -10,7 +10,8 @@
 #define WINDOW_WIDTH  560
 #define WINDOW_HEIGHT 620
 
-using namespace std;
+using std::optional;
+using std::nullopt;
 
 namespace Packman {
 

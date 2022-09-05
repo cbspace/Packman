@@ -3,17 +3,19 @@
 
 #include "lib/Error.h"
 #include "display.h"
+#include "game_map.h"
 #include "playable_character.h"
 #include <SDL2/SDL.h>
 #include <optional>
 #include <string>
 #include <iostream>
-#include <fstream>
 #include <vector>
-#include <algorithm>
+//#include <algorithm>
 
 #define MAP_PATH "./res/maps/map1.map"
 
+using std::cout;
+using std::endl;
 using std::optional;
 
 namespace Packman {
@@ -27,35 +29,11 @@ enum class KeyPress {
     Quit
 };
 
-enum class MapPoint {
-    WallFull,
-    WallAbove,
-    WallBelow,
-    WallLeft,
-    WallRight,
-    CornerTopLeftInside,
-    CornerTopRightInside,
-    CornerBottomLeftInside,
-    CornerBottomRightInside,
-    CornerTopLeftOutside,
-    CornerTopRightOutside,
-    CornerBottomLeftOutside,
-    CornerBottomRightOutside,
-    Space,
-    LeftOpening,
-    RightOpening,
-    Dot,
-    PowerPellet,
-    NotValid
-};
-
 class Game {
 
     public:
         Game();
         int game_loop();
-
-        optional<Error> load_map_from_file(string const &path);
         
     private:
         void event_loop();
@@ -65,12 +43,15 @@ class Game {
         optional<KeyPress> get_key();
 
         Display main_display;
-        vector<vector<MapPoint>> map_vec;
-        //PlayableCharacter packman_character;
+        GameMap game_map;
+        
+        PlayableCharacter packman_character;
 
         bool quit_flag;
-        int map_width = 0;
-        int map_height = 0;
+        // int map_width = 0;
+        // int map_height = 0;
+
+
 };
 
 }
