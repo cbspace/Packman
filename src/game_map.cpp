@@ -85,7 +85,7 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
             } 
         });
 
-        this->map_vec.push_back(current_row);
+        this->map_points.push_back(current_row);
     }
     
     ifs.close();

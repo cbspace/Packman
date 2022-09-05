@@ -51,7 +51,7 @@ void Game::update_character() {
 
 void Game::draw_map() {
     int y = 0;
-    for(const auto &row : game_map.map_vec) {
+    for(const auto &row : game_map.map_points) {
         int x = 0;
         for(const auto point : row) {
             if (point == MapPoint::WallFull) {

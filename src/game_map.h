@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <algorithm>
+#include <utility>
 
 using std::vector;
 using std::optional;
@@ -18,6 +19,7 @@ using std::ifstream;
 using std::ios;
 using std::getline;
 using std::for_each;
+using std::pair;
 
 namespace Packman {
 
@@ -44,6 +46,13 @@ enum class MapPoint {
     NotValid
 };
 
+enum class MapObject {
+    Dot,
+    PowerPellet,
+    Fruit,
+    Nothing
+};
+
 class GameMap {
 
     public:
@@ -51,10 +60,11 @@ class GameMap {
 
         optional<Error> load_map_from_file(string const &path);
 
-        vector<vector<MapPoint>> map_vec;
+        vector<vector<MapPoint>> map_points;
+        vector<vector<MapObject>> map_objects;
         
     private:
-        
+        pair<int, int> player_start;
 
 };
 
