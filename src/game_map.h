@@ -1,7 +1,7 @@
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
 
-#include "character.h"
+#include "playable_character.h"
 #include "lib/Error.h"
 #include <fstream>
 #include <iostream>
@@ -40,9 +40,6 @@ enum class MapPoint {
     Space,
     LeftOpening,
     RightOpening,
-    Dot,
-    PowerPellet,
-    PlayerStart,
     NotValid
 };
 
@@ -59,6 +56,7 @@ class GameMap {
         GameMap();
 
         optional<Error> load_map_from_file(string const &path);
+
 
         vector<vector<MapPoint>> map_points;
         vector<vector<MapObject>> map_objects;

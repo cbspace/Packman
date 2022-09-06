@@ -39,6 +39,7 @@ class Game {
         void event_loop();
         void render_cycle();
         void draw_map();
+        void draw_objects();
         void update_character();
         optional<KeyPress> get_key();
 

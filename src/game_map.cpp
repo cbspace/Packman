@@ -16,76 +16,102 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
     if (!map_width || !map_height || !(map_width + map_height < 200)) { return Error("Invalid map size"); }
 
     while(!ifs.eof()) {
-        vector<MapPoint> current_row(map_width);
+        vector<MapPoint> current_row_map_point(map_width);
+        vector<MapObject> current_row_map_object(map_width);
         getline(ifs, str);
-        int i = 0;
+        int x = 0;
+        int y = 0;
 
-        for_each(str.begin(), str.end(), [&current_row, &i] (char const &c) {
+        for (const auto c : str) {
             switch (c) {
                 case '*':
-                    current_row[i++] = MapPoint::WallFull;
+                    current_row_map_point[x] = MapPoint::WallFull;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case 'A':
-                    current_row[i++] = MapPoint::WallAbove;
+                    current_row_map_point[x] = MapPoint::WallAbove;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case 'B':
-                    current_row[i++] = MapPoint::WallBelow;
+                    current_row_map_point[x] = MapPoint::WallBelow;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case 'L':
-                    current_row[i++] = MapPoint::WallLeft;
+                    current_row_map_point[x] = MapPoint::WallLeft;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case 'R':
-                    current_row[i++] = MapPoint::WallRight;
+                    current_row_map_point[x] = MapPoint::WallRight;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '1':
-                    current_row[i++] = MapPoint::CornerTopLeftInside;
+                    current_row_map_point[x] = MapPoint::CornerTopLeftInside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '2':
-                    current_row[i++] = MapPoint::CornerTopRightInside;
+                    current_row_map_point[x] = MapPoint::CornerTopRightInside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '3':
-                    current_row[i++] = MapPoint::CornerBottomRightInside;
+                    current_row_map_point[x] = MapPoint::CornerBottomRightInside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '4':
-                    current_row[i++] = MapPoint::CornerBottomLeftInside;
+                    current_row_map_point[x] = MapPoint::CornerBottomLeftInside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '5':
-                    current_row[i++] = MapPoint::CornerTopLeftOutside;
+                    current_row_map_point[x] = MapPoint::CornerTopLeftOutside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '6':
-                    current_row[i++] = MapPoint::CornerTopRightOutside;
+                    current_row_map_point[x] = MapPoint::CornerTopRightOutside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '7':
-                    current_row[i++] = MapPoint::CornerBottomRightOutside;
+                    current_row_map_point[x] = MapPoint::CornerBottomRightOutside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case '8':
-                    current_row[i++] = MapPoint::CornerBottomLeftOutside;
+                    current_row_map_point[x] = MapPoint::CornerBottomLeftOutside;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case 'E':
-                    current_row[i++] = MapPoint::Space;
+                    current_row_map_point[x] = MapPoint::Space;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case ' ':
-                    current_row[i++] = MapPoint::Dot; //temp
+                    current_row_map_point[x] = MapPoint::Space;
+                    current_row_map_object[x] = MapObject::Dot;
                     break;
                 case '[':
-                    current_row[i++] = MapPoint::LeftOpening;
+                    current_row_map_point[x] = MapPoint::LeftOpening;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case ']':
-                    current_row[i++] = MapPoint::RightOpening;
+                    current_row_map_point[x] = MapPoint::RightOpening;
+                    current_row_map_object[x] = MapObject::Nothing;
                     break;
                 case 'P':
-                    current_row[i++] = MapPoint::PowerPellet; //temp
+                    current_row_map_point[x] = MapPoint::Space;
+                    current_row_map_object[x] = MapObject::PowerPellet;
                     break;
                 case 'S':
-                    current_row[i++] = MapPoint::PlayerStart;
+                    current_row_map_point[x] = MapPoint::Space;
+                    current_row_map_object[x] = MapObject::Nothing;
+                    player_start = {x,y};
                     break;
                 default:
-                    current_row[i++] = MapPoint::NotValid;
+                    current_row_map_point[x] = MapPoint::NotValid;
+                    current_row_map_object[x] = MapObject::Nothing;
                     //cout << "Invalid character: '" << c << "' found in map file" << endl;
-            } 
-        });
+            }
+            x++;
+        }
 
-        this->map_points.push_back(current_row);
+        this->map_points.push_back(current_row_map_point);
+        this->map_objects.push_back(current_row_map_object);
+        y++;
     }
     
     ifs.close();

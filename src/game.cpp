@@ -16,7 +16,7 @@ int Game::game_loop() {
     }
 
     event_loop();
-
+    
     return 0;
 }
 
@@ -39,6 +39,7 @@ void Game::render_cycle() {
 
     // Draw screen
     draw_map();
+    draw_objects();
     update_character();
 
     // Update Screen
@@ -118,11 +119,23 @@ void Game::draw_map() {
                 SDL_RenderFillRect(main_display.main_renderer, &wall_rect_big);
                 SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
                 SDL_RenderFillRect(main_display.main_renderer, &wall_rect_small);
-            } else if (point == MapPoint::Dot) {
+            }
+            x++;
+        }
+        y++;
+    }
+}
+
+void Game::draw_objects() {
+    int y = 0;
+    for(const auto &row : game_map.map_objects) {
+        int x = 0;
+        for(const auto point : row) {
+            if (point == MapObject::Dot) {
                 SDL_Rect dot_rect{ x*20 + 8, y*20 + 8, 4, 4 };
                 SDL_SetRenderDrawColor(main_display.main_renderer, 0xff, 0xff, 0xff, 0xff);
                 SDL_RenderFillRect(main_display.main_renderer, &dot_rect);
-            } else if (point == MapPoint::PowerPellet) {
+            } else if (point == MapObject::PowerPellet) {
                 SDL_Rect dot_rect{ x*20 + 6, y*20 + 6, 12, 12 };
                 SDL_SetRenderDrawColor(main_display.main_renderer, 0xff, 0xff, 0xff, 0xff);
                 SDL_RenderFillRect(main_display.main_renderer, &dot_rect);
@@ -132,6 +145,7 @@ void Game::draw_map() {
         y++;
     }
 }
+
 
 optional<KeyPress> Game::get_key() {
     SDL_Event event;
