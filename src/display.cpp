@@ -18,9 +18,6 @@ optional<Error> Display::init() {
     window = SDL_CreateWindow("Packman", 650, 100, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     if (window == NULL) { return Error("SDL failed to initialise",SDL_GetError()); }
 
-    window_surface = SDL_GetWindowSurface(window);
-    if (window_surface == NULL) { return Error("Cannot create SDL surface",SDL_GetError()); }
-
     main_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (main_renderer == NULL) { return Error("Cannot create SDL renderer",SDL_GetError()); }
 
