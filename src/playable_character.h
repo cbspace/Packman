@@ -5,7 +5,7 @@
 
 namespace Packman {
 
-class PlayableCharacter : Character {
+class PlayableCharacter : public Character {
 
     public:
         PlayableCharacter();

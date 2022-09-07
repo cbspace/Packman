@@ -54,16 +54,15 @@ class GameMap {
 
     public:
         GameMap();
-
         optional<Error> load_map_from_file(string const &path);
-
+        int get_player_start_x();
+        int get_player_start_y();
 
         vector<vector<MapPoint>> map_points;
         vector<vector<MapObject>> map_objects;
-        
+
     private:
         pair<int, int> player_start;
-
 };
 
 }

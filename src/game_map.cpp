@@ -2,6 +2,10 @@
 
 GameMap::GameMap() {}
 
+int GameMap::get_player_start_x() { return player_start.first; }
+
+int GameMap::get_player_start_y() { return player_start.second; }
+
 optional<Error> GameMap::load_map_from_file(string const &path) {
     ifstream ifs;
     string str;
@@ -20,7 +24,6 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
         vector<MapObject> current_row_map_object(map_width);
         getline(ifs, str);
         int x = 0;
-        int y = 0;
 
         for (const auto c : str) {
             switch (c) {
@@ -99,7 +102,7 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
                 case 'S':
                     current_row_map_point[x] = MapPoint::Space;
                     current_row_map_object[x] = MapObject::Nothing;
-                    player_start = {x,y};
+                    player_start = std::make_pair(x,map_objects.size());
                     break;
                 default:
                     current_row_map_point[x] = MapPoint::NotValid;
@@ -111,7 +114,6 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
 
         this->map_points.push_back(current_row_map_point);
         this->map_objects.push_back(current_row_map_object);
-        y++;
     }
     
     ifs.close();

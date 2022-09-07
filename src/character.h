@@ -20,6 +20,9 @@ class Character {
         int x_pos;
         int y_pos;
         PlayerDirection direction;
+
+    protected:
+    
     private:
 
 };

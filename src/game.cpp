@@ -15,6 +15,9 @@ int Game::game_loop() {
         return 1;
     }
 
+    packman_character.x_pos = game_map.get_player_start_x();
+    packman_character.y_pos = game_map.get_player_start_y();
+    
     event_loop();
     
     return 0;
@@ -27,7 +30,7 @@ void Game::event_loop() {
 
         render_cycle();
 
-        SDL_Delay(16);
+        SDL_Delay(100);
     }
 }
 
@@ -47,7 +50,11 @@ void Game::render_cycle() {
 }
 
 void Game::update_character() {
+    //packman_character.x_pos -= 1;
 
+    SDL_Rect player_rect{ packman_character.x_pos * 20 - 7, packman_character.y_pos * 20 - 7, 34, 34 };
+    SDL_SetRenderDrawColor(main_display.main_renderer, 0xea, 0xea, 0x00, 0xff);
+    SDL_RenderFillRect(main_display.main_renderer, &player_rect);
 }
 
 void Game::draw_map() {
