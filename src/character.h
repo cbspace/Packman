@@ -3,24 +3,38 @@
 
 namespace Packman {
 
-enum class PlayerDirection {
+enum class CharacterDirection {
     Up,
     Down,
     Left,
     Right
 };
 
+enum class CharacterName {
+    Blinky,
+    Winky,
+    Inky,
+    Clyde,
+    PackMan
+};
+
+struct CharacterPos {
+    int xgrid;
+    int ygrid;
+    int xminor;
+    int yminor;
+};
+
 class Character {
 
     public:
         Character();
-
         void reset_character();
 
-        int x_pos;
-        int y_pos;
-        PlayerDirection direction;
-
+        CharacterName name;
+        CharacterDirection direction;
+        CharacterPos pos;
+        
     protected:
     
     private:

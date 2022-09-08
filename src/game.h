@@ -40,8 +40,11 @@ class Game {
         void render_cycle();
         void draw_map();
         void draw_objects();
-        void update_character();
+        void move_character(Character& c);
+        void draw_character(Character& c);
         optional<KeyPress> get_key();
+
+        bool next_square_is_space(Character& c);
 
         Display main_display;
         GameMap game_map;

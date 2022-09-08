@@ -10,5 +10,9 @@ Error::Error(const string &error_string, const string &error_additional) {
 }
 
 string Error::get_error_string() {
-    return error_text + " (" + error_additional_text + ")";
+    if (error_additional_text.empty()) {
+        return error_text;
+    } else { 
+        return error_text + " (" + error_additional_text + ")";
+    }
 }

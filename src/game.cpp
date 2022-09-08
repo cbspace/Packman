@@ -15,8 +15,8 @@ int Game::game_loop() {
         return 1;
     }
 
-    packman_character.x_pos = game_map.get_player_start_x();
-    packman_character.y_pos = game_map.get_player_start_y();
+    packman_character.pos.xgrid = game_map.get_player_start_x();
+    packman_character.pos.ygrid = game_map.get_player_start_y();
     
     event_loop();
     
@@ -30,7 +30,7 @@ void Game::event_loop() {
 
         render_cycle();
 
-        SDL_Delay(100);
+        SDL_Delay(20);
     }
 }
 
@@ -43,16 +43,40 @@ void Game::render_cycle() {
     // Draw screen
     draw_map();
     draw_objects();
-    update_character();
+    move_character(packman_character);
 
     // Update Screen
     SDL_RenderPresent(main_display.main_renderer);
 }
 
-void Game::update_character() {
-    //packman_character.x_pos -= 1;
+void Game::move_character(Character &c) {
 
-    SDL_Rect player_rect{ packman_character.x_pos * 20 - 7, packman_character.y_pos * 20 - 7, 34, 34 };
+    if (c.direction == CharacterDirection::Left) {
+        if (c.pos.xminor == 0) {
+            if (next_square_is_space(c)) {
+                c.pos.xgrid -= 1;
+                c.pos.xminor = 19;
+            }
+        } else {
+            c.pos.xminor -= 1;
+        }
+        
+    }
+    
+    draw_character(c);
+}
+
+bool Game::next_square_is_space(Character& c) {
+    if (c.direction == CharacterDirection::Left) {
+        if (game_map.map_points[c.pos.ygrid][c.pos.xgrid-1] == MapPoint::Space) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Game::draw_character(Character &c) {
+    SDL_Rect player_rect{ c.pos.xgrid * 20 - 7 + c.pos.xminor, c.pos.ygrid * 20 - 7 + c.pos.yminor, 34, 34 };
     SDL_SetRenderDrawColor(main_display.main_renderer, 0xea, 0xea, 0x00, 0xff);
     SDL_RenderFillRect(main_display.main_renderer, &player_rect);
 }
