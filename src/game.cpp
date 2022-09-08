@@ -25,9 +25,7 @@ int Game::game_loop() {
 
 void Game::event_loop() {
     while (!quit_flag) {
-        auto last_key_event = get_key();
-        quit_flag = (last_key_event == KeyPress::Quit);
-
+        process_key_event();
         render_cycle();
 
         SDL_Delay(20);
@@ -36,16 +34,13 @@ void Game::event_loop() {
 
 
 void Game::render_cycle() {
-    // Clear screen
     SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(main_display.main_renderer);
 
-    // Draw screen
     draw_map();
     draw_objects();
     move_character(packman_character);
 
-    // Update Screen
     SDL_RenderPresent(main_display.main_renderer);
 }
 
@@ -60,23 +55,62 @@ void Game::move_character(Character &c) {
         } else {
             c.pos.xminor -= 1;
         }
-        
+    } else if (c.direction == CharacterDirection::Right) {
+        if (c.pos.xminor == 19) {
+            if (next_square_is_space(c)) {
+                c.pos.xgrid += 1;
+                c.pos.xminor = 0;
+            }
+        } else {
+            c.pos.xminor += 1;
+        }
+    } else if (c.direction == CharacterDirection::Up) {
+        if (c.pos.yminor == 0) {
+            if (next_square_is_space(c)) {
+                c.pos.ygrid -= 1;
+                c.pos.yminor = 19;
+            }
+        } else {
+            c.pos.yminor -= 1;
+        }
+    } else if (c.direction == CharacterDirection::Down) {
+        if (c.pos.yminor == 19) {
+            if (next_square_is_space(c)) {
+                c.pos.ygrid += 1;
+                c.pos.yminor = 0;
+            }
+        } else {
+            c.pos.yminor += 1;
+        }
     }
-    
+
     draw_character(c);
 }
 
 bool Game::next_square_is_space(Character& c) {
     if (c.direction == CharacterDirection::Left) {
-        if (game_map.map_points[c.pos.ygrid][c.pos.xgrid-1] == MapPoint::Space) {
+        if (game_map.map_points[c.pos.ygrid][c.pos.xgrid - 1] == MapPoint::Space) {
+            return true;
+        }
+    } else if (c.direction == CharacterDirection::Right) {
+        if (game_map.map_points[c.pos.ygrid][c.pos.xgrid + 2] == MapPoint::Space) {
+            return true;
+        }
+    } if (c.direction == CharacterDirection::Up) {
+        if (game_map.map_points[c.pos.ygrid - 1][c.pos.xgrid] == MapPoint::Space) {
+            return true;
+        }
+    } else if (c.direction == CharacterDirection::Down) {
+        if (game_map.map_points[c.pos.ygrid + 2][c.pos.xgrid] == MapPoint::Space) {
             return true;
         }
     }
+
     return false;
 }
 
 void Game::draw_character(Character &c) {
-    SDL_Rect player_rect{ c.pos.xgrid * 20 - 7 + c.pos.xminor, c.pos.ygrid * 20 - 7 + c.pos.yminor, 34, 34 };
+    SDL_Rect player_rect{ c.pos.xgrid * 20 -7 + c.pos.xminor, c.pos.ygrid * 20 -7 + c.pos.yminor, 34, 34 };
     SDL_SetRenderDrawColor(main_display.main_renderer, 0xea, 0xea, 0x00, 0xff);
     SDL_RenderFillRect(main_display.main_renderer, &player_rect);
 }
@@ -178,30 +212,24 @@ void Game::draw_objects() {
 }
 
 
-optional<KeyPress> Game::get_key() {
+void Game::process_key_event() {
     SDL_Event event;
     while(SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
-            return KeyPress::Quit;
+            quit_flag = true;
         } else if (event.type == SDL_KEYDOWN) {
             auto key = event.key.keysym.scancode;
             if (key == SDL_SCANCODE_ESCAPE || key == SDL_SCANCODE_Q) {
-                return KeyPress::Quit;
-            }
-            else if (key == SDL_SCANCODE_UP) {
-                return KeyPress::Up;
-            }
-            if (key == SDL_SCANCODE_DOWN) {
-                return KeyPress::Down;
-            }
-            if (key == SDL_SCANCODE_LEFT) {
-                return KeyPress::Left;
-            }
-            if (key == SDL_SCANCODE_RIGHT) {
-                return KeyPress::Right;
+                quit_flag = true;
+            } else if (key == SDL_SCANCODE_UP) {
+                    packman_character.direction = CharacterDirection::Up; 
+            } else if (key == SDL_SCANCODE_DOWN) {
+                packman_character.direction = CharacterDirection::Down;
+            } else if (key == SDL_SCANCODE_LEFT) {
+                packman_character.direction = CharacterDirection::Left;
+            } else if (key == SDL_SCANCODE_RIGHT) {
+                packman_character.direction = CharacterDirection::Right;
             }
         }
     }
-
-    return nullopt;
 }

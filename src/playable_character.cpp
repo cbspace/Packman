@@ -6,6 +6,6 @@ PlayableCharacter::PlayableCharacter() {
 
 void PlayableCharacter::reset_character() {
     this->lives = 3;
-    this->direction = CharacterDirection::Left;
+    this->direction = CharacterDirection::None;
     this->score = 0;
 }

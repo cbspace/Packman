@@ -7,7 +7,8 @@ enum class CharacterDirection {
     Up,
     Down,
     Left,
-    Right
+    Right,
+    None
 };
 
 enum class CharacterName {

@@ -42,7 +42,7 @@ class Game {
         void draw_objects();
         void move_character(Character& c);
         void draw_character(Character& c);
-        optional<KeyPress> get_key();
+        void process_key_event();
 
         bool next_square_is_space(Character& c);
 

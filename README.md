@@ -6,6 +6,6 @@ Initial Goals
 - [x] Create SDL Window
 - [x] Implement event loop
 - [x] Draw map
-- [ ] Draw character
-- [ ] Move character
+- [x] Draw character
+- [x] Move character
 - [ ] Character following map
