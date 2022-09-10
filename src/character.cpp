@@ -8,12 +8,12 @@ void Character::move_one() {
     if (direction == CharacterDirection::Left) {
         if (pos_minor_x == 0) {
             pos_grid_x -= 1;
-            pos_minor_x = 19;
+            pos_minor_x = MINOR_STEP_MAX;
         } else {
             pos_minor_x -= 1;
         }
     } else if (direction == CharacterDirection::Right) {
-        if (pos_minor_x == 19) {
+        if (pos_minor_x == MINOR_STEP_MAX) {
             pos_grid_x += 1;
             pos_minor_x = 0;
         } else {
@@ -22,12 +22,12 @@ void Character::move_one() {
     } if (direction == CharacterDirection::Up) {
         if (pos_minor_y == 0) {
             pos_grid_y -= 1;
-            pos_minor_y = 19;
+            pos_minor_y = MINOR_STEP_MAX;
         } else {
             pos_minor_y -= 1;
         }
     } else if (direction == CharacterDirection::Down) {
-        if (pos_minor_y == 19) {
+        if (pos_minor_y == MINOR_STEP_MAX) {
             pos_grid_y += 1;
             pos_minor_y = 0;
         } else {
@@ -54,10 +54,10 @@ bool Character::is_grid_aligned() {
 
 // x position used for rendering
 int Character::absolute_position_x() {
-    return pos_grid_x * 20 + pos_minor_x - ((CHARACTER_SIZE - 20) / 2);
+    return pos_grid_x * 20 + pos_minor_x * MOVE_STEP - ((CHARACTER_SIZE - 20) / 2);
 }
 
 // y position used for rendering
 int Character::absolute_position_y() {
-    return pos_grid_y * 20 + pos_minor_y - ((CHARACTER_SIZE - 20) / 2);
+    return pos_grid_y * 20 + pos_minor_y * MOVE_STEP - ((CHARACTER_SIZE - 20) / 2);
 }

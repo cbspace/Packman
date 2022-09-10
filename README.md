@@ -9,3 +9,5 @@ Initial Goals
 - [x] Draw character
 - [x] Move character
 - [x] Character following map
+- [ ] Character can go through side
+- [ ] Character can collect objects

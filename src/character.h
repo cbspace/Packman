@@ -1,6 +1,8 @@
 #pragma once
 
-#define CHARACTER_SIZE 34
+#define CHARACTER_SIZE   34
+#define MOVE_STEP        4
+#define MINOR_STEP_MAX   (20 / MOVE_STEP) - 1
 
 namespace Packman {
 

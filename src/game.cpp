@@ -28,7 +28,7 @@ void Game::event_loop() {
         process_key_event();
         render_cycle();
 
-        SDL_Delay(20);
+        SDL_Delay(16);
     }
 }
 
@@ -60,7 +60,6 @@ bool Game::try_change_direction(PlayableCharacter& c) {
         return true;
     }
 
-    c.requested_direction = CharacterDirection::None;
     return false;
 }
 
