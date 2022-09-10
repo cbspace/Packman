@@ -1,5 +1,4 @@
-#ifndef ERROR_H
-#define ERROR_H
+#pragma once
 
 #include <string>
 
@@ -20,5 +19,3 @@ class Error {
 }
 
 using namespace Packman;
-
-#endif // ERROR_H

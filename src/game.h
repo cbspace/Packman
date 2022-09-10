@@ -1,5 +1,4 @@
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 
 #include "lib/Error.h"
 #include "display.h"
@@ -62,5 +61,3 @@ class Game {
 }
 
 using namespace Packman;
-
-#endif // GAME_H

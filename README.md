@@ -8,4 +8,4 @@ Initial Goals
 - [x] Draw map
 - [x] Draw character
 - [x] Move character
-- [ ] Character following map
+- [x] Character following map

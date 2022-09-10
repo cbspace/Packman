@@ -1,5 +1,4 @@
-#ifndef GAME_MAP_H
-#define GAME_MAP_H
+#pragma once
 
 #include "playable_character.h"
 #include "lib/Error.h"
@@ -68,5 +67,3 @@ class GameMap {
 }
 
 using namespace Packman;
-
-#endif // GAME_MAP_H

@@ -15,8 +15,8 @@ int Game::game_loop() {
         return 1;
     }
 
-    packman_character.pos.xgrid = game_map.get_player_start_x();
-    packman_character.pos.ygrid = game_map.get_player_start_y();
+    packman_character.pos_grid_x = game_map.get_player_start_x();
+    packman_character.pos_grid_y = game_map.get_player_start_y();
     
     event_loop();
     
@@ -54,115 +54,50 @@ bool Game::try_change_direction(PlayableCharacter& c) {
         return false;
     }
 
-    if (c.direction == CharacterDirection::Left) {
-        if (c.requested_direction == CharacterDirection::Right) {
-            if (next_square_is_space(c,CharacterDirection::Right)) {
-                c.direction = CharacterDirection::Right;
-                c.requested_direction = CharacterDirection::None;
-                return true;
-            }
-        } else if (c.requested_direction == CharacterDirection::Up) {
-            if (next_square_is_space(c,CharacterDirection::Up)) {
-                c.direction = CharacterDirection::Up;
-                c.requested_direction = CharacterDirection::None;
-                return true;
-            }
-        }
+    if (next_square_is_space(c,c.requested_direction)) {
+        c.direction = c.requested_direction;
+        c.requested_direction = CharacterDirection::None;
+        return true;
     }
 
+    c.requested_direction = CharacterDirection::None;
     return false;
 }
 
 void Game::move_character(PlayableCharacter &c) {
-    if (c.direction == CharacterDirection::Start && c.requested_direction != CharacterDirection::None) {
+    // FIXME: should check for grid alignment and/or next square free
+    if (c.direction == CharacterDirection::None && c.requested_direction != CharacterDirection::None) {
         c.direction = c.requested_direction;
-        // if (c.requested_direction == CharacterDirection::Left || c.requested_direction == CharacterDirection::Right) {
-
-        // }
     }
-
-    if (c.direction == CharacterDirection::Left) {
-        if (c.pos.xminor == 0) {
-            if (!try_change_direction(c) && next_square_is_space(c, CharacterDirection::Left)) {
-                c.pos.xgrid -= 1;
-                c.pos.xminor = 19;
-            }
-        } else {
-            if (c.requested_direction == CharacterDirection::Right) {
-                c.direction = CharacterDirection::Right;
-            } else {
-                c.pos.xminor -= 1; 
-            }
+    
+    if (c.is_grid_aligned()) {
+        if (!try_change_direction(c) && next_square_is_space(c, c.direction)) {
+            c.move_one();
         }
-    } else if (c.direction == CharacterDirection::Up) {
-        if (c.pos.yminor == 0) {
-            if (!try_change_direction(c) && next_square_is_space(c, CharacterDirection::Up)) {
-                c.pos.ygrid -= 1;
-                c.pos.yminor = 19;
-            }
+    } else {
+        if (c.requested_direction_is_opposite()) {
+            c.direction = c.requested_direction;
         } else {
-            if (c.requested_direction == CharacterDirection::Right) {
-                c.direction = CharacterDirection::Right;
-            } else {
-                c.pos.xminor -= 1; 
-            }
+            c.move_one();
         }
     }
-
-    // if (c.direction == CharacterDirection::Left) {
-    //     if (next_square_is_space(c)) {
-    //         if ( c.pos.xminor == 0 ) {
-    //             c.pos.xgrid -= 1;
-    //             c.pos.xminor = 19;
-    //         } else {
-    //             c.pos.xminor -= 1; 
-    //             }
-    //     }
-    // } else if (c.direction == CharacterDirection::Right) {
-    //     if (next_square_is_space(c)) {
-    //         if (c.pos.xminor == 19) {
-    //             c.pos.xgrid += 1;
-    //             c.pos.xminor = 0;
-    //         } else {
-    //             c.pos.xminor += 1;
-    //         }
-    //     }
-    // } else if (c.direction == CharacterDirection::Up) {
-    //     if (next_square_is_space(c)) {
-    //         if (c.pos.yminor == 0) {
-    //             c.pos.ygrid -= 1;
-    //             c.pos.yminor = 19;
-    //         } else {
-    //         c.pos.yminor -= 1;
-    //         }
-    //     }
-    // } else if (c.direction == CharacterDirection::Down) {
-    //     if (next_square_is_space(c)) {
-    //         if (c.pos.yminor == 19) {
-    //             c.pos.ygrid += 1;
-    //             c.pos.yminor = 0;
-    //         } else {
-    //             c.pos.yminor += 1;
-    //         }
-    //     }
-    // }
 }
 
 bool Game::next_square_is_space(Character& c, CharacterDirection dir_to_check) {
     if (dir_to_check == CharacterDirection::Left) {
-        if (game_map.map_points[c.pos.ygrid][c.pos.xgrid - 1] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y][c.pos_grid_x - 1] == MapPoint::Space) {
             return true;
         }
     } else if (dir_to_check == CharacterDirection::Right) {
-        if (game_map.map_points[c.pos.ygrid][c.pos.xgrid + 1] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y][c.pos_grid_x + 1] == MapPoint::Space) {
             return true;
         }
     } if (dir_to_check == CharacterDirection::Up) {
-        if (game_map.map_points[c.pos.ygrid - 1][c.pos.xgrid] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y - 1][c.pos_grid_x] == MapPoint::Space) {
             return true;
         }
     } else if (dir_to_check == CharacterDirection::Down) {
-        if (game_map.map_points[c.pos.ygrid + 1][c.pos.xgrid] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y + 1][c.pos_grid_x] == MapPoint::Space) {
             return true;
         }
     }
@@ -171,7 +106,7 @@ bool Game::next_square_is_space(Character& c, CharacterDirection dir_to_check) {
 }
 
 void Game::draw_character(Character &c) {
-    SDL_Rect player_rect{ c.pos.xgrid * 20 - 17 + c.pos.xminor, c.pos.ygrid * 20 - 17 + c.pos.yminor, 34, 34 };
+    SDL_Rect player_rect{ c.absolute_position_x(), c.absolute_position_y(), 34, 34 };
     SDL_SetRenderDrawColor(main_display.main_renderer, 0xea, 0xea, 0x00, 0xff);
     SDL_RenderFillRect(main_display.main_renderer, &player_rect);
 }

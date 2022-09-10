@@ -1,5 +1,4 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#pragma once
 
 #include "lib/Error.h"
 #include <SDL2/SDL.h>
@@ -32,5 +31,3 @@ class Display {
 }
 
 using namespace Packman;
-
-#endif // DISPLAY_H

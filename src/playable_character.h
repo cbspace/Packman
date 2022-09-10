@@ -1,5 +1,4 @@
-#ifndef PLAYABLE_CHARACTER_H
-#define PLAYABLE_CHARACTER_H
+#pragma once
 
 #include "character.h"
 
@@ -10,6 +9,7 @@ class PlayableCharacter : public Character {
     public:
         PlayableCharacter();
         void reset_character();
+        bool requested_direction_is_opposite();
 
         int lives;
         int score;
@@ -22,5 +22,3 @@ class PlayableCharacter : public Character {
 }
 
 using namespace Packman;
-
-#endif // PLAYABLE_CHARACTER_H

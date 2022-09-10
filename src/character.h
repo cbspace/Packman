@@ -1,5 +1,6 @@
-#ifndef CHARACTER_H
-#define CHARACTER_H
+#pragma once
+
+#define CHARACTER_SIZE 34
 
 namespace Packman {
 
@@ -8,7 +9,6 @@ enum class CharacterDirection {
     Down,
     Left,
     Right,
-    Start,
     None
 };
 
@@ -20,31 +20,29 @@ enum class CharacterName {
     PackMan
 };
 
-struct CharacterPos {
-    int xgrid;
-    int ygrid;
-    int xminor;
-    int yminor;
-};
-
 class Character {
 
     public:
         Character();
         void reset_character();
+        void move_one();
+        bool is_grid_aligned();    // Character in centre of square in x or y plane
+        int absolute_position_x(); // x position used for rendering
+        int absolute_position_y(); // y position used for rendering
 
         CharacterName name;
         CharacterDirection direction;
-        CharacterPos pos;
-        
-    protected:
-    
-    private:
 
+        int pos_grid_x;
+        int pos_grid_y;
+
+    protected:
+
+        int pos_minor_x;
+        int pos_minor_y;
+        
 };
 
 }
 
 using namespace Packman;
-
-#endif // CHARACTER_H
