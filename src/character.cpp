@@ -5,6 +5,6 @@ Character::Character() {
 }
 
 void Character::reset_character() {
-    pos.xminor = 0;
-    pos.yminor = 0;
+    pos.xminor = 9;
+    pos.yminor = 9;
 }

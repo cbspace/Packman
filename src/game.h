@@ -40,11 +40,12 @@ class Game {
         void render_cycle();
         void draw_map();
         void draw_objects();
-        void move_character(Character& c);
+        void move_character(PlayableCharacter& c);
         void draw_character(Character& c);
         void process_key_event();
 
-        bool next_square_is_space(Character& c);
+        bool next_square_is_space(Character& c, CharacterDirection dir_to_check);
+        bool try_change_direction(PlayableCharacter& c);
 
         Display main_display;
         GameMap game_map;

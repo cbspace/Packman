@@ -13,6 +13,8 @@ class PlayableCharacter : public Character {
 
         int lives;
         int score;
+
+        CharacterDirection requested_direction;
     private:
 
 };
