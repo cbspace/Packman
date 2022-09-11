@@ -87,6 +87,10 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
                     current_row_map_point[x] = MapPoint::Space;
                     current_row_map_object[x] = MapObject::Dot;
                     break;
+                case 'F':
+                    current_row_map_point[x] = MapPoint::Fence;
+                    current_row_map_object[x] = MapObject::Nothing;
+                    break;
                 case '[':
                     current_row_map_point[x] = MapPoint::LeftOpening;
                     current_row_map_object[x] = MapObject::Nothing;

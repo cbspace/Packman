@@ -179,6 +179,10 @@ void Game::draw_map() {
                 SDL_RenderFillRect(main_display.main_renderer, &wall_rect_big);
                 SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
                 SDL_RenderFillRect(main_display.main_renderer, &wall_rect_small);
+            } else if (point == MapPoint::Fence) {
+                SDL_Rect wall_rect{ x*20, y*20 + 10, 20, 10 };
+                SDL_SetRenderDrawColor(main_display.main_renderer, 0xde, 0xa8, 0xdb, 0xff);
+                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
             }
             x++;
         }

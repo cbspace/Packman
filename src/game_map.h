@@ -37,6 +37,7 @@ enum class MapPoint {
     CornerBottomLeftOutside,
     CornerBottomRightOutside,
     Space,
+    Fence,
     LeftOpening,
     RightOpening,
     NotValid
