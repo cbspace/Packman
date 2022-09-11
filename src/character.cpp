@@ -39,6 +39,7 @@ void Character::move_one() {
 void Character::reset_character() {
     pos_minor_x = 0;
     pos_minor_y = 0;
+    is_in_tunnel = false;
 }
 
 // Character in centre of square in x or y plane

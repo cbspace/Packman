@@ -37,8 +37,9 @@ class Character {
 
         int pos_grid_x;
         int pos_grid_y;
+        bool is_in_tunnel;
 
-    protected:
+    //protected:
 
         int pos_minor_x;
         int pos_minor_y;

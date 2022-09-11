@@ -28,7 +28,7 @@ void Game::event_loop() {
         process_key_event();
         render_cycle();
 
-        SDL_Delay(16);
+        SDL_Delay(22);
     }
 }
 
@@ -54,7 +54,7 @@ bool Game::try_change_direction(PlayableCharacter& c) {
         return false;
     }
 
-    if (next_square_is_space(c,c.requested_direction)) {
+    if (next_square_is(MapPoint::Space, c,c.requested_direction)) {
         c.direction = c.requested_direction;
         c.requested_direction = CharacterDirection::None;
         return true;
@@ -63,14 +63,39 @@ bool Game::try_change_direction(PlayableCharacter& c) {
     return false;
 }
 
+bool Game::check_character_tunnel_movement(Character& c) {
+    if (c.is_in_tunnel) {
+        if (c.direction == CharacterDirection::Left) {
+            if (c.pos_minor_x <= -60) {
+                c.pos_grid_x = 21;
+                c.is_in_tunnel = false;
+            } else {
+                c.pos_minor_x -= MOVE_STEP;
+            }
+        }
+        return true;
+    }
+
+    if (c.direction == CharacterDirection::Left && next_square_is(MapPoint::LeftOpening, c, CharacterDirection::Left) 
+        && !c.is_in_tunnel && c.is_grid_aligned()) {
+        c.is_in_tunnel = true;
+        return true;
+    }
+
+    return false;
+}
 void Game::move_character(PlayableCharacter &c) {
     // FIXME: should check for grid alignment and/or next square free
     if (c.direction == CharacterDirection::None && c.requested_direction != CharacterDirection::None) {
         c.direction = c.requested_direction;
     }
+
+    if (check_character_tunnel_movement(c)) {
+        return;
+    }
     
     if (c.is_grid_aligned()) {
-        if (!try_change_direction(c) && next_square_is_space(c, c.direction)) {
+        if (!try_change_direction(c) && next_square_is(MapPoint::Space, c, c.direction)) {
             c.move_one();
         }
     } else {
@@ -82,21 +107,21 @@ void Game::move_character(PlayableCharacter &c) {
     }
 }
 
-bool Game::next_square_is_space(Character& c, CharacterDirection dir_to_check) {
+bool Game::next_square_is(MapPoint match_square_type, Character& c, CharacterDirection dir_to_check) {
     if (dir_to_check == CharacterDirection::Left) {
-        if (game_map.map_points[c.pos_grid_y][c.pos_grid_x - 1] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y][c.pos_grid_x - 1] == match_square_type) {
             return true;
         }
     } else if (dir_to_check == CharacterDirection::Right) {
-        if (game_map.map_points[c.pos_grid_y][c.pos_grid_x + 1] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y][c.pos_grid_x + 1] == match_square_type) {
             return true;
         }
     } if (dir_to_check == CharacterDirection::Up) {
-        if (game_map.map_points[c.pos_grid_y - 1][c.pos_grid_x] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y - 1][c.pos_grid_x] == match_square_type) {
             return true;
         }
     } else if (dir_to_check == CharacterDirection::Down) {
-        if (game_map.map_points[c.pos_grid_y + 1][c.pos_grid_x] == MapPoint::Space) {
+        if (game_map.map_points[c.pos_grid_y + 1][c.pos_grid_x] == match_square_type) {
             return true;
         }
     }

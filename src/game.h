@@ -43,8 +43,9 @@ class Game {
         void draw_character(Character& c);
         void process_key_event();
 
-        bool next_square_is_space(Character& c, CharacterDirection dir_to_check);
+        bool next_square_is(MapPoint match_square_type, Character& c, CharacterDirection dir_to_check);
         bool try_change_direction(PlayableCharacter& c);
+        bool check_character_tunnel_movement(Character& c);
 
         Display main_display;
         GameMap game_map;
