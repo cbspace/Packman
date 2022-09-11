@@ -63,24 +63,28 @@ bool Game::try_change_direction(PlayableCharacter& c) {
     return false;
 }
 
-bool Game::check_character_tunnel_movement(Character& c) {
+//FIXME: Can get stuck when changing direction in tunnel
+bool Game::character_tunnel_movement(Character& c) {
     if (c.is_in_tunnel) {
         if (c.direction == CharacterDirection::Left) {
-            if (c.pos_minor_x <= -60) {
-                c.pos_grid_x = 21;
+            if (c.pos_minor_x <= -13) {
+                c.pos_grid_x = game_map.get_right_tunnel_location_x();
+                c.reset_character();
                 c.is_in_tunnel = false;
             } else {
                 c.pos_minor_x -= MOVE_STEP;
             }
+        } else if (c.direction == CharacterDirection::Right) {
+            if (c.pos_minor_x >= 13) {
+                c.pos_grid_x = game_map.get_left_tunnel_location_x();
+                c.reset_character();
+                c.is_in_tunnel = false;
+            } else {
+                c.pos_minor_x += MOVE_STEP;
+            }
         }
         return true;
-    }
-
-    if (c.direction == CharacterDirection::Left && next_square_is(MapPoint::LeftOpening, c, CharacterDirection::Left) 
-        && !c.is_in_tunnel && c.is_grid_aligned()) {
-        c.is_in_tunnel = true;
-        return true;
-    }
+    } 
 
     return false;
 }
@@ -90,13 +94,17 @@ void Game::move_character(PlayableCharacter &c) {
         c.direction = c.requested_direction;
     }
 
-    if (check_character_tunnel_movement(c)) {
+    if (character_tunnel_movement(c)) {
         return;
     }
     
     if (c.is_grid_aligned()) {
-        if (!try_change_direction(c) && next_square_is(MapPoint::Space, c, c.direction)) {
-            c.move_one();
+        try_change_direction(c);
+        if (next_square_is(MapPoint::Space, c, c.direction)) { 
+            c.move_one(); 
+        } else if (next_square_is(MapPoint::LeftOpening, c, c.direction) || next_square_is(MapPoint::RightOpening, c, c.direction)) { 
+            c.is_in_tunnel = true;
+            c.move_one(); 
         }
     } else {
         if (c.requested_direction_is_opposite()) {

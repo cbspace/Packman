@@ -57,12 +57,16 @@ class GameMap {
         optional<Error> load_map_from_file(string const &path);
         int get_player_start_x();
         int get_player_start_y();
+        int get_left_tunnel_location_x();
+        int get_right_tunnel_location_x();
 
         vector<vector<MapPoint>> map_points;
         vector<vector<MapObject>> map_objects;
 
     private:
         pair<int, int> player_start;
+        pair<int, int> left_tunnel_location;
+        pair<int, int> right_tunnel_location;
 };
 
 }

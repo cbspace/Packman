@@ -3,8 +3,10 @@
 GameMap::GameMap() {}
 
 int GameMap::get_player_start_x() { return player_start.first; }
-
 int GameMap::get_player_start_y() { return player_start.second; }
+
+int GameMap::get_left_tunnel_location_x() { return left_tunnel_location.first; }
+int GameMap::get_right_tunnel_location_x() { return right_tunnel_location.first; }
 
 optional<Error> GameMap::load_map_from_file(string const &path) {
     ifstream ifs;
@@ -94,10 +96,12 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
                 case '[':
                     current_row_map_point[x] = MapPoint::LeftOpening;
                     current_row_map_object[x] = MapObject::Nothing;
+                    left_tunnel_location = std::make_pair(x,map_objects.size());
                     break;
                 case ']':
                     current_row_map_point[x] = MapPoint::RightOpening;
                     current_row_map_object[x] = MapObject::Nothing;
+                    right_tunnel_location = std::make_pair(x,map_objects.size());
                     break;
                 case 'P':
                     current_row_map_point[x] = MapPoint::Space;
