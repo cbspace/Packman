@@ -42,6 +42,7 @@ class Game {
         void move_character(PlayableCharacter& c);
         void draw_character(Character& c);
         void process_key_event();
+        void check_collisions(PlayableCharacter& c);
 
         bool next_square_is(MapPoint match_square_type, Character& c, CharacterDirection dir_to_check);
         bool try_change_direction(PlayableCharacter& c);

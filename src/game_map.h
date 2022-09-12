@@ -62,6 +62,7 @@ class GameMap {
 
         vector<vector<MapPoint>> map_points;
         vector<vector<MapObject>> map_objects;
+        int dots_remaining;
 
     private:
         pair<int, int> player_start;

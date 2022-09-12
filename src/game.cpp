@@ -26,8 +26,10 @@ int Game::game_loop() {
 void Game::event_loop() {
     while (!quit_flag) {
         process_key_event();
-        render_cycle();
+        move_character(packman_character);
+        check_collisions(packman_character);
 
+        render_cycle();
         SDL_Delay(22);
     }
 }
@@ -39,7 +41,6 @@ void Game::render_cycle() {
 
     draw_map();
     draw_objects();
-    move_character(packman_character);
     draw_character(packman_character);
 
     SDL_RenderPresent(main_display.main_renderer);
@@ -88,6 +89,7 @@ bool Game::character_tunnel_movement(Character& c) {
 
     return false;
 }
+
 void Game::move_character(PlayableCharacter &c) {
     // FIXME: should check for grid alignment and/or next square free
     if (c.direction == CharacterDirection::None && c.requested_direction != CharacterDirection::None) {
@@ -262,6 +264,15 @@ void Game::process_key_event() {
             } else if (key == SDL_SCANCODE_RIGHT) {
                 packman_character.requested_direction = CharacterDirection::Right;
             }
+        }
+    }
+}
+
+void Game::check_collisions(PlayableCharacter& c) {
+    if (c.is_grid_aligned()) {
+        if (game_map.map_objects[c.pos_grid_y][c.pos_grid_x] == MapObject::Dot) {
+            game_map.dots_remaining -= 1;
+            game_map.map_objects[c.pos_grid_y][c.pos_grid_x] = MapObject::Nothing;
         }
     }
 }

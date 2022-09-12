@@ -1,6 +1,6 @@
 #include "game_map.h"
 
-GameMap::GameMap() {}
+GameMap::GameMap() { dots_remaining = 0; }
 
 int GameMap::get_player_start_x() { return player_start.first; }
 int GameMap::get_player_start_y() { return player_start.second; }
@@ -88,6 +88,7 @@ optional<Error> GameMap::load_map_from_file(string const &path) {
                 case ' ':
                     current_row_map_point[x] = MapPoint::Space;
                     current_row_map_object[x] = MapObject::Dot;
+                    dots_remaining += 1;
                     break;
                 case 'F':
                     current_row_map_point[x] = MapPoint::Fence;
