@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lib/Error.h"
+#include "LibCB/Error.h"
 #include <SDL2/SDL.h>
 #include <optional>
 #include <string>

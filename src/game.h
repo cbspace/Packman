@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lib/Error.h"
+#include "LibCB/Error.h"
 #include "display.h"
 #include "game_map.h"
 #include "playable_character.h"

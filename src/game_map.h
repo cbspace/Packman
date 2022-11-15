@@ -1,7 +1,7 @@
 #pragma once
 
 //#include "playable_character.h"
-#include "lib/Error.h"
+#include "LibCB/Error.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
