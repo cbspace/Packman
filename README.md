@@ -4,7 +4,7 @@ Pacman Game in C++
 A simple 2D game to improve my C++ skills and explore the SDL2 graphics library.
 
 
-<img src="https://github.com/cbspace/Packman/blob/main/images/screenshot.jpg?raw=true" width=560 height=656 alt="Game Screenshot">
+<img src="https://github.com/cbspace/Packman/blob/main/images/screenshot.jpg?raw=true" width=448 height=525 alt="Game Screenshot">
 
 
 Build Process
