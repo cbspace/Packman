@@ -36,14 +36,14 @@ void Game::event_loop() {
 
 
 void Game::render_cycle() {
-    SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
-    SDL_RenderClear(main_display.main_renderer);
+    SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0x00, 0x00);
+    SDL_RenderClear(main_display.get_renderer());
 
     draw_map();
     draw_objects();
     draw_character(packman_character);
 
-    SDL_RenderPresent(main_display.main_renderer);
+    SDL_RenderPresent(main_display.get_renderer());
 }
 
 bool Game::try_change_direction(PlayableCharacter& c) {
@@ -141,8 +141,8 @@ bool Game::next_square_is(MapPoint match_square_type, Character& c, CharacterDir
 
 void Game::draw_character(Character &c) {
     SDL_Rect player_rect{ c.absolute_position_x(), c.absolute_position_y(), 34, 34 };
-    SDL_SetRenderDrawColor(main_display.main_renderer, 0xea, 0xea, 0x00, 0xff);
-    SDL_RenderFillRect(main_display.main_renderer, &player_rect);
+    SDL_SetRenderDrawColor(main_display.get_renderer(), 0xea, 0xea, 0x00, 0xff);
+    SDL_RenderFillRect(main_display.get_renderer(), &player_rect);
 }
 
 void Game::draw_map() {
@@ -152,72 +152,72 @@ void Game::draw_map() {
         for(const auto point : row) {
             if (point == MapPoint::WallFull) {
                 SDL_Rect wall_rect{ x*20, y*20 ,20, 20 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::WallAbove) {
                 SDL_Rect wall_rect{ x*20, y*20 ,20, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::WallBelow) {
                 SDL_Rect wall_rect{ x*20, y*20 + 10, 20, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::WallLeft) {
                 SDL_Rect wall_rect{ x*20, y*20 ,10, 20 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::WallRight) {
                 SDL_Rect wall_rect{ x*20 + 10, y*20 ,10, 20 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::CornerTopLeftInside) {
                 SDL_Rect wall_rect{ x*20 + 10, y*20 + 10, 10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::CornerTopRightInside) {
                 SDL_Rect wall_rect{ x*20, y*20 + 10 ,10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::CornerBottomRightInside) {
                 SDL_Rect wall_rect{ x*20,y*20 , 10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::CornerBottomLeftInside) {
                 SDL_Rect wall_rect{ x*20 + 10, y*20, 10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             } else if (point == MapPoint::CornerTopLeftOutside) {
                 SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
                 SDL_Rect wall_rect_small{ x*20 + 10, y*20 + 10, 10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_big);
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_small);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_big);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_small);
             } else if (point == MapPoint::CornerTopRightOutside) {
                 SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
                 SDL_Rect wall_rect_small{ x*20, y*20 +10,10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_big);
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_small);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_big);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_small);
             } else if (point == MapPoint::CornerBottomRightOutside) {
                 SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
                 SDL_Rect wall_rect_small{ x*20, y*20, 10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_big);
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_small);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_big);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_small);
             } else if (point == MapPoint::CornerBottomLeftOutside) {
                 SDL_Rect wall_rect_big{ x*20, y*20, 20, 20 };
                 SDL_Rect wall_rect_small{ x*20 + 10, y*20, 10, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_big);
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0x00, 0x00, 0x00, 0x00);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect_small);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_big);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0x00, 0x00, 0x00, 0x00);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect_small);
             } else if (point == MapPoint::Fence) {
                 SDL_Rect wall_rect{ x*20, y*20 + 10, 20, 10 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0xde, 0xa8, 0xdb, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &wall_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0xde, 0xa8, 0xdb, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &wall_rect);
             }
             x++;
         }
@@ -232,12 +232,12 @@ void Game::draw_objects() {
         for(const auto point : row) {
             if (point == MapObject::Dot) {
                 SDL_Rect dot_rect{ x*20 + 8, y*20 + 8, 4, 4 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0xff, 0xff, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &dot_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0xff, 0xff, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &dot_rect);
             } else if (point == MapObject::PowerPellet) {
                 SDL_Rect dot_rect{ x*20 + 6, y*20 + 6, 12, 12 };
-                SDL_SetRenderDrawColor(main_display.main_renderer, 0xff, 0xff, 0xff, 0xff);
-                SDL_RenderFillRect(main_display.main_renderer, &dot_rect);
+                SDL_SetRenderDrawColor(main_display.get_renderer(), 0xff, 0xff, 0xff, 0xff);
+                SDL_RenderFillRect(main_display.get_renderer(), &dot_rect);
             }
             x++;
         }

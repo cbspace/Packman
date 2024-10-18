@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(pacman VERSION 0.0.1)
+cmake_minimum_required(VERSION 3.5.0)
+project(pacman VERSION 0.0.2)
 
 include(CTest)
 enable_testing()

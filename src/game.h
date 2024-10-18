@@ -9,7 +9,6 @@
 #include <string>
 #include <iostream>
 #include <vector>
-//#include <algorithm>
 
 #define MAP_PATH "./res/maps/map1.map"
 
@@ -54,9 +53,6 @@ class Game {
         PlayableCharacter packman_character;
 
         bool quit_flag;
-        // int map_width = 0;
-        // int map_height = 0;
-
 
 };
 
